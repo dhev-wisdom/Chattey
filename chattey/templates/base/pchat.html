@@ -1,5 +1,8 @@
 {% extends 'base/main.html' %}
 
+{% load static %}
+
+
 {% block title %}
 <title>Private chat - {{request.user.username}} &amp; {{other_user.username}}</title>
 {% endblock %}
@@ -13,11 +16,12 @@
     {% for chat_message in chat_messages %}
     <p>{{chat_message}}</p>
     {% empty %}
-    <p>This is the beginning of your conversion with {{other_user.username}}</p>
-    <p>No chats yet</p>
+    <p>This is the beginning of your conversion with {{other_user.username}}<br />
+      No chats yet</p>
     {% endfor %}
 </div>
-<form method="post">
+<div id="chat-message"></div>
+<form id="form" method="post">
     {% csrf_token %}
     <input type="text" id="message-input" name="chat">
     <input type="submit" id="send-message" value="Send">
@@ -25,29 +29,41 @@
 {% else %}
 <p>Login to view this page</p>
 {% endif %}
-{% endblock %}
 
+<!-- <script src="{% static 'js/private-chat.js' %}"></script> -->
 <script>
-    {% raw %}
-    const chatSocket = new WebSocket('ws://' + window.location.host + '/ws/private-chat/{{ other_user.username }}/');
-    {% endraw %}
+    const url = 'ws://' + window.location.host + '/ws/private-chat/{{ other_user.username|safe }}/';
+    console.log('url ', url);
+    const chatSocket = new WebSocket(url);
 
+    chatSocket.addEventListener('open', () => {console.log("Websocket connected")});
 
-    chatSocket.onopen(() => {console.log("Websocket connected")});
-
-    chatSocket.onmessage((e) => {
+    chatSocket.onmessage = (e) => {
         const data = JSON.parse(e.data);
-        console.log("data received from backend websocket: ", data);
-        document.getElementById("chat-messages").innerHTML = "<p>" + data.message + "</p>";
-    });
+        console.log("Data: ", data);
+        const messages = document.getElementById("chat-message");
+        const divMessages = document.getElementById("chat-messages");
+        divMessages.innerHTML = '';
+        messages.insertAdjacentHTML('beforeend', `<p>${data.message}</p>`);
+        console.log("message: ", data.message);
+        console.log("type: ", data.type);
+    }
 
-    chatSocket.onclose(() => {console.log("Websocket disconnected")});
+    chatSocket.addEventListener('close', () => {console.log("Websocket disconnected")});
 
 
-    document.querySelector("#send-message").onclick = () => {
+    document.querySelector("#send-message").onclick = (e) => {
+        e.preventDefault();
         const messageInput = document.querySelector("#message-input");
-        chatSocket.send(JSON.stringify({ message: message.value}));
-        console.log('Message ' + messageInput.value + ' sent to backend websocket');
+        const message = {
+            type: 'chat_message',
+            recipients: [ '{{ request.user.username|safe }}', '{{ other_user.username|safe }}'],
+            message: messageInput.value,
+        }
+        chatSocket.send(JSON.stringify(message));
+        console.log('Message ' + message + ' sent to backend websocket');
         messageInput.value = '';
     }
 </script>
+
+{% endblock %}
