@@ -1,0 +1,53 @@
+{% extends 'base/main.html' %}
+
+{% block title %}
+<title>Private chat - {{request.user.username}} &amp; {{other_user.username}}</title>
+{% endblock %}
+
+{% block content %}
+{% if request.user.is_authenticated %}
+<p>This is the beginning of your private chat with {{other_user.username}}</p>
+<p>This chat is end to end encrypted and only you and {{other_user.username}} can view this chat</p>
+<br />
+<div id="chat-messages">
+    {% for chat_message in chat_messages %}
+    <p>{{chat_message}}</p>
+    {% empty %}
+    <p>This is the beginning of your conversion with {{other_user.username}}</p>
+    <p>No chats yet</p>
+    {% endfor %}
+</div>
+<form method="post">
+    {% csrf_token %}
+    <input type="text" id="message-input" name="chat">
+    <input type="submit" id="send-message" value="Send">
+</form>
+{% else %}
+<p>Login to view this page</p>
+{% endif %}
+{% endblock %}
+
+<script>
+    {% raw %}
+    const chatSocket = new WebSocket('ws://' + window.location.host + '/ws/private-chat/{{ other_user.username }}/');
+    {% endraw %}
+
+
+    chatSocket.onopen(() => {console.log("Websocket connected")});
+
+    chatSocket.onmessage((e) => {
+        const data = JSON.parse(e.data);
+        console.log("data received from backend websocket: ", data);
+        document.getElementById("chat-messages").innerHTML = "<p>" + data.message + "</p>";
+    });
+
+    chatSocket.onclose(() => {console.log("Websocket disconnected")});
+
+
+    document.querySelector("#send-message").onclick = () => {
+        const messageInput = document.querySelector("#message-input");
+        chatSocket.send(JSON.stringify({ message: message.value}));
+        console.log('Message ' + messageInput.value + ' sent to backend websocket');
+        messageInput.value = '';
+    }
+</script>

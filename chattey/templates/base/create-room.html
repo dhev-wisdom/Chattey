@@ -1,0 +1,16 @@
+{% extends 'base/main.html' %}
+
+{% block title %}
+<title>{{request.user.username}} - Start group chat</title>
+{% endblock %}
+
+{% block content %}
+
+<form method="post">
+    {% csrf_token %}
+    <h1>Start a group chat</h1>
+    <p>Group chats are a great way to have big fun together</p>
+    {{ form.as_p }}
+    <input type="submit" value="Create Group Chat">
+</form>
+{% endblock %}

@@ -1,0 +1,29 @@
+{% extends 'base/main.html' %}
+
+{% block title %}
+<title>Chattey - {{group.name}} Group Conversion</title>
+{% endblock %}
+
+{% block content %}
+
+<h1>{{group.name|title}} - {{group.date_created}}</h1>
+<div>
+    <p><a href="{% url 'edit-group' group.id %}">Edit Group</a></p>
+    <p><a href="{% url 'delete-group' group.id %}">Delete Group</a></p>
+</div>
+{% if messages %}
+{% for message in messages %}
+<p>{{message}}</p>
+{% endfor %}
+{% endif %}
+<h3>Participants</h3>
+<ul>
+    {% for participant in group.participants.all %}
+        {% if participant.id == group.creator.id %}
+        <li><b>{{participant.username}}</b> - (Admin)</li>
+        {% else %}
+        <li><a href="{% url 'pchat' participant.username %}">{{participant.username}}</a></li>
+        {% endif %}
+    {% endfor %}
+</ul>
+{%  endblock %}

@@ -1,0 +1,22 @@
+{% extends 'base/main.html' %}
+
+{% block content %}
+
+<form action="" method="post">
+    {% csrf_token %}
+    <!-- <div>
+        <label for="username">Username
+            <input type="text" name="username" id="username" placeholder="Username">
+        </label>
+    </div>
+    <div>
+        <label for="pasword">Password
+            <input type="password" name="password" id="password" placeholder="Password">
+        </label>
+    </div> -->
+    {{ form.as_p }}
+    <input type="submit" value="Register">
+    <p>Already have an account? <a href="{% url 'login' %}">Login</a></p>
+</form>
+
+{% endblock %}

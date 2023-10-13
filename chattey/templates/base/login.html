@@ -1,0 +1,32 @@
+{% extends 'base/main.html' %}
+
+{% block title %}
+<title>Login - Chattey</title>
+{% endblock title %}
+
+{% block content %}
+
+<form method="post">
+    {% csrf_token %}
+    <p>{{message}}</p>
+    <div>
+        <label for="username">Username
+            <input type="text" name="username" id="username" placeholder="Username">
+        </label>
+    </div>
+    <div>
+        <label for="pasword">Password
+            <input type="password" name="password" id="password" placeholder="Password">
+        </label>
+    </div>
+    {% if messages %}
+        {% for message in messages %}
+        <p>{{message}}</p>
+        {% endfor %}
+    {% endif %}
+    <!-- {{ form.as_p }} -->
+    <input type="submit" value="Login">
+    <p>Don't have an account? <a href="{% url 'register' %}">SignUp</a></p>
+</form>
+
+{% endblock %}

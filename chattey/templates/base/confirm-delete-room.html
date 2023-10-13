@@ -1,0 +1,18 @@
+{% extends 'base/main.html' %}
+
+{% block title %}
+<title>Chattey - Delete {{group.name}}</title>
+{% endblock %}
+
+{% block content %}
+<h1>Confirm {{group.name}} delete!</h1>
+<p>Are you sure you want to delete {{group.name}}?</p>
+<p>Please note that this action can't be reversed</p>
+<form method="post">
+    {% csrf_token %}
+    <input type="submit" value="Proceed">
+</form>
+<div>
+    <a href="{% url 'group-chat' group.id %}">Cancel</a>
+</div>
+{% endblock %}
