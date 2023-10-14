@@ -14,10 +14,13 @@
 <br />
 <div id="chat-messages">
     {% for chat_message in chat_messages %}
-    <p>{{chat_message}}</p>
+        {% if chat_message.sender == request.user %}
+        <p style="color: rgb(25, 25, 109)">{{chat_message}}</p>
+        {% else %}
+        <p style="color: rgb(25, 134, 25)">{{chat_message}}</p>
+        {% endif %}
     {% empty %}
-    <p>This is the beginning of your conversion with {{other_user.username}}<br />
-      No chats yet</p>
+    <p>This is the beginning of your conversion with {{other_user.username}}</p>
     {% endfor %}
 </div>
 <div id="chat-message"></div>
@@ -43,10 +46,15 @@
         console.log("Data: ", data);
         const messages = document.getElementById("chat-message");
         const divMessages = document.getElementById("chat-messages");
-        divMessages.innerHTML = '';
-        messages.insertAdjacentHTML('beforeend', `<p>${data.message}</p>`);
+        const sender = data.sender;
+        if (sender === '{{ request.user.username|safe }}') {
+            messages.insertAdjacentHTML('beforeend', `<p style="color: rgb(25, 25, 109)">${data.message}</p>`);
+        } else {
+            messages.insertAdjacentHTML('beforeend', `<p style="color: rgb(25, 134, 25)">${data.message}</p>`);
+        }
         console.log("message: ", data.message);
         console.log("type: ", data.type);
+        console.log("sender: ", data.sender);
     }
 
     chatSocket.addEventListener('close', () => {console.log("Websocket disconnected")});
@@ -57,7 +65,7 @@
         const messageInput = document.querySelector("#message-input");
         const message = {
             type: 'chat_message',
-            recipients: [ '{{ request.user.username|safe }}', '{{ other_user.username|safe }}'],
+            recipients: [ '{{ request.user.username|safe }}', '{{ other_user.username|safe }}' ],
             message: messageInput.value,
         }
         chatSocket.send(JSON.stringify(message));

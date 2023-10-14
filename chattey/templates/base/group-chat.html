@@ -26,4 +26,67 @@
         {% endif %}
     {% endfor %}
 </ul>
+{% if request.user.is_authenticated %}
+
+<br />
+<div id="group-messages">
+    {% for group_message in group_messages %}
+        {% if group_message.sender == request.user %}
+        <p style="color: rgb(25, 25, 109)">{{group_message}}</p>
+        {% else %}
+        <p style="color: rgb(25, 134, 25)">{{group_message}}</p>
+        {% endif %}
+    {% empty %}
+    <p>This is the beginning of your group conversation in {{group.name|title}}</p>
+    {% endfor %}
+</div>
+<div id="group-message"></div>
+<form method="post">
+    <input type="text" name="chat" id="message-input">
+    <input type="submit" id="send-message" value="Send">
+</form>
+{% endif %}
+
+
+<script>
+    const url = 'ws://' + window.location.host + '/ws/group-chat/{{ group.id|safe }}/';
+    console.log('url ', url);
+    const chatSocket = new WebSocket(url);
+
+    chatSocket.addEventListener('open', () => {console.log("Websocket connected")});
+
+    chatSocket.onmessage = (e) => {
+        const data = JSON.parse(e.data);
+        console.log("Data: ", data);
+        const messages = document.getElementById("group-message");
+        const divMessages = document.getElementById("group-messages");
+        const sender = data.sender;
+        if (sender === '{{ request.user.username|safe }}') {
+            messages.insertAdjacentHTML('beforeend', `<p style="color: rgb(25, 25, 109)">${data.message}</p>`);
+        } else {
+            messages.insertAdjacentHTML('beforeend', `<p style="color: rgb(25, 134, 25)">${data.message}</p>`);
+        }
+        console.log("message: ", data.message);
+        console.log("type: ", data.type);
+        console.log("sender: ", data.sender);
+    }
+
+    chatSocket.addEventListener('close', () => {console.log("Websocket disconnected")});
+
+
+    document.querySelector("#send-message").onclick = (e) => {
+        e.preventDefault();
+        const messageInput = document.querySelector("#message-input");
+        const message = {
+            type: 'group_message',
+            room_id: '{{ group.id|safe }}',
+            sender: '{{ request.user.username|safe }}',
+            message: messageInput.value,
+        }
+        chatSocket.send(JSON.stringify(message));
+        console.log('Message ' + message + ' sent to backend websocket');
+        messageInput.value = '';
+    }
+</script>
+
 {%  endblock %}

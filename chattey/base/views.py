@@ -5,6 +5,7 @@ from .registration_form import RegistrationForm
 from .group_chat import GroupChatForm
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
+from django.db.models import Q
 
 def logIn(request):
     if request.user.is_authenticated:
@@ -57,7 +58,7 @@ def reset_password(request):
 def home(request):
     regisetered_users = User.objects.all()
     if request.user.is_authenticated:
-        groups = ChatRoom.objects.filter(creator=request.user)
+        groups = ChatRoom.objects.filter(participants=request.user)
     else:
         groups = None
     context = {'users': regisetered_users, 'groups': groups}
@@ -65,7 +66,10 @@ def home(request):
 
 def pchat(request, username):
     other_user = User.objects.get(username=username)
-    context ={'other_user': other_user}
+    chat_messages = Message.objects.filter(
+        Q(sender=request.user, receiver=other_user) | Q(sender=other_user, receiver=request.user)
+    )
+    context ={'other_user': other_user, 'chat_messages': chat_messages}
     return render(request, 'base/pchat.html', context)
 
 def create_group(request):
