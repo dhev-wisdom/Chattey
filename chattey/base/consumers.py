@@ -101,14 +101,12 @@ class GroupChatConsumer(AsyncWebsocketConsumer):
         logger.info('websocket disconnected')
 
     @sync_to_async
-    def save_message(self, body, sender, receiver, room_id):
+    def save_message(self, body, sender, room_id):
         user_sender = User.objects.get(username=sender)
-        user_receiver = User.objects.get(username=receiver)
-        room = ChatRoom.objects.get(id-room_id)
+        room = ChatRoom.objects.get(id=room_id)
         message = Message(
             body = body,
             sender = user_sender,
-            receiver = user_receiver,
             room = room,
         )
         message.save()
@@ -120,6 +118,8 @@ class GroupChatConsumer(AsyncWebsocketConsumer):
         room_id = text_data_json.get('room_id')
         print("message type: ", message_type)
         message = text_data_json['message']
+        await self.save_message(message, sender, room_id)
+        logger.info('message saved to database for room %s', room_id)
         logger.info('message received from websocket frontend for room: %s', room_id)
 
         if message_type == 'group_message':

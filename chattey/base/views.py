@@ -96,7 +96,8 @@ def create_group(request):
 
 def group_chat(request, id):
     group = ChatRoom.objects.get(id=id)
-    context = {'group': group}
+    group_messages = Message.objects.filter(room=group)
+    context = {'group': group, 'group_messages': group_messages}
     return render(request, 'base/group-chat.html', context)
 
 def edit_group(request, id):

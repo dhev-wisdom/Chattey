@@ -34,7 +34,7 @@
         {% if group_message.sender == request.user %}
         <p style="color: rgb(25, 25, 109)">{{group_message}}</p>
         {% else %}
-        <p style="color: rgb(25, 134, 25)">{{group_message}}</p>
+        <p style="color: rgb(25, 134, 25)">{{group_message}} <small> - {{group_message.sender}}</small></p>
         {% endif %}
     {% empty %}
     <p>This is the beginning of your group conversation in {{group.name|title}}</p>
@@ -64,7 +64,7 @@
         if (sender === '{{ request.user.username|safe }}') {
             messages.insertAdjacentHTML('beforeend', `<p style="color: rgb(25, 25, 109)">${data.message}</p>`);
         } else {
-            messages.insertAdjacentHTML('beforeend', `<p style="color: rgb(25, 134, 25)">${data.message}</p>`);
+            messages.insertAdjacentHTML('beforeend', `<p style="color: rgb(25, 134, 25)">${data.message} <small>${data.sender}</small></p>`);
         }
         console.log("message: ", data.message);
         console.log("type: ", data.type);
