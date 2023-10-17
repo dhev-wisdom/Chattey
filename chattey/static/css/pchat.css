@@ -9,6 +9,18 @@ a {
     border-radius: 20px;
     padding: 2rem
 }
+.edit-and-delete {
+    position: absolute;
+    right: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    font-weight: 500;
+}
+.edit-message-form {
+    width: 90%;
+    margin: 1rem auto;
+    padding: 1rem;
+}
 .chat-area {
     padding: 1.5rem;
     position: relative;
@@ -28,6 +40,7 @@ a {
 }
 .sender-message {
     border-radius: 15px 25px 0 15px;
+    position: relative;
 }
 .receiver-message {
     border-radius: 0 15px 15px 25px;
