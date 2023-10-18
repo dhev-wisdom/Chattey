@@ -23,6 +23,7 @@
         <div class="pchat-div">
             <a href="{% url 'user-profile' other_user.id %}" style="text-decoration: none; color: inherit;">
             <div class="person-sect d-flex theme-color text-white align-items-center mb-3">
+                <div class="d-flex">
                 <i class="bi bi-person-circle size2"></i>
                 <div class="d-flex flex-column ms-3 align-items-start">
                     <div class="name-container mb-0">
@@ -31,6 +32,12 @@
                     <div class="chat-container mt-0">
                         <p class="group-desc">last seen</p>
                     </div>
+                </div>
+                </div>
+                <div class="ms-auto">
+                    <a href="{{request.META.HTTP_REFERER}}">
+                        <i class="bi bi-arrow-left size3"></i>
+                    </a>
                 </div>
             </div>
             </a>

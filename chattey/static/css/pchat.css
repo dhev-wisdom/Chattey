@@ -84,6 +84,11 @@ a {
 .size2 {
     font-size: 2rem;
 }
+.size3 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #FFF;
+}
 
 @media screen and (max-width: 1120px) {
     .pchat-sect {
