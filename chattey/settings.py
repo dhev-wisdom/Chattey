@@ -16,7 +16,7 @@ SECRET_KEY = os.environ.get("SECRET_KEY")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ['https://chattey-ebd43eb5547a.herokuapp.com/', '127.0.0.1:8000']
 
 
 # Application definition
@@ -71,20 +71,20 @@ ASGI_APPLICATION = 'chattey.asgi.application'
 
 WSGI_APPLICATION = 'chattey.wsgi.application'
 
-# CHANNEL_LAYERS = {
-#     'default': {
-#         'BACKEND': 'channels_redis.core.RedisChannelLayer',
-#         'CONFIG': {
-#             "hosts": [("127.0.0.1", 6379)],
-#         },
-#     },
-# }
-
 CHANNEL_LAYERS = {
     'default': {
-        'BACKEND': 'channels.layers.InMemoryChannelLayer',
+        'BACKEND': 'channels_redis.core.RedisChannelLayer',
+        'CONFIG': {
+            "hosts": [os.environ.get('REDIS_URL', 'redis://localhost:6379')],
+        },
     },
 }
+
+# CHANNEL_LAYERS = {
+#     'default': {
+#         'BACKEND': 'channels.layers.InMemoryChannelLayer',
+#     },
+# }
 
 
 # Database
@@ -108,17 +108,6 @@ DATABASES = {
     }
 }
 
-# DATABASES = {
-#     "default": {
-#         "ENGINE": "django.db.backends.postgresql_psycopg2",
-#         "NAME": "d8c8ftgh0v7uft",
-#         "USER": "kbnclyvnzppgrk",
-#         "PASSWORD": "107b407d208bb4de0852db4873ce70a4fe82421a27d962cc69dcb49acbc3de36",
-#         "HOST": "ec2-54-234-13-16.compute-1.amazonaws.com",
-#         "PORT": "5432",
-#     }
-# }
-
 # db_from_env = dj_database_url.config(conn_max_age=500)
 # DATABASES['default'].update(db_from_env)
 
@@ -135,8 +124,6 @@ DATABASES = {
 #     }
 # }
 
-
-WHITENOISE_USE_FINDERS = True
 
 
 # Password validation
@@ -198,16 +185,16 @@ LOGGING = {
 }
 
 
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtp.mailgun.org'
-EMAIL_USE_TLS = True
-EMAIL_PORT = 587
-EMAIL_HOST_USER = "postmaster@sandboxcc9ebba3a47448f7b10d2e44f710d6e3.mailgun.org"
-EMAIL_HOST_PASSWORD = "?UT^+wu63G3PUuf"
+# EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+# EMAIL_HOST = 'smtp.mailgun.org'
+# EMAIL_USE_TLS = True
+# EMAIL_PORT = 587
+# EMAIL_HOST_USER = "postmaster@sandboxcc9ebba3a47448f7b10d2e44f710d6e3.mailgun.org"
+# EMAIL_HOST_PASSWORD = "?UT^+wu63G3PUuf"
 
-DEFAULT_FROM_EMAIL = 'nonsowisdom62@gmail.com'
-EMAIL_USE_SSL = False
-EMAIL_TIMEOUT = None
+# DEFAULT_FROM_EMAIL = 'nonsowisdom62@gmail.com'
+# EMAIL_USE_SSL = False
+# EMAIL_TIMEOUT = None
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
