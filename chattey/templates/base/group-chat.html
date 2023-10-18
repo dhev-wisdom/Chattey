@@ -110,6 +110,10 @@
 
 
 <script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const messageArea = document.getElementById("message-input");
+        if (messageArea) messageArea.focus();
+    });
     const url = 'ws://' + window.location.host + '/ws/group-chat/{{ group.id|safe }}/';
     console.log('url ', url);
     const chatSocket = new WebSocket(url);

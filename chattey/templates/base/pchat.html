@@ -14,6 +14,12 @@
 {% block css %}
     <link rel="stylesheet" href="{% static 'css/index.css' %}">
     <link rel="stylesheet" href="{% static 'css/pchat.css' %}">
+
+    <style>
+        .hidden {
+            display: none;
+        }
+    </style>
 {% endblock css %}
 
 {% block content %}
@@ -46,9 +52,6 @@
                     
                     {% else %}
                     <div class="receiver-message bg-light text-left me-auto">{{chat_message}}
-                        <!-- <small class="username"><a href="{% url 'user-profile' chat_message.receiver.id %}" style="text-decoration: none; color: inherit;">
-                            {{chat_message.receiver.username}}
-                        </a></small> -->
                         <small class="message-time">{{chat_message.timestamp|time:"H:i A"}}</small>
                     </div>
                     {% endif %}
@@ -70,6 +73,10 @@
       </section>
 
 <script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const messageArea = document.getElementById("message-input");
+        if (messageArea) messageArea.focus();
+    });
     const url = 'ws://' + window.location.host + '/ws/private-chat/{{ other_user.username|safe }}/';
     console.log('url ', url);
     const chatSocket = new WebSocket(url);
@@ -80,7 +87,10 @@
         const data = JSON.parse(e.data);
         const messages = document.getElementById("chat-message");
         const messageDiv = document.createElement('div');
+        const prev = document.getElementById("prev-check");
         const sender = data.sender;
+
+        prev.classList.add("hidden");
 
         if (sender === '{{ request.user.username|safe }}') {
             messageDiv.className = "sender-message theme-color text-white text-right ms-auto";
