@@ -91,7 +91,7 @@
                 {% for group_message in group_messages %}
                 {% if group_message.sender == request.user %}
                 <div class="sender-message theme-color text-white text-right ms-auto">{{group_message}}
-                    <small class="message-time text-dark">{{group_message.timestamp|time:"H:i A"}}</small>
+                    <small class="message-time text-dark">{{group_message.timestamp}}</small>
                     <small class="edit-and-delete"><a href="{% url 'edit-message' group_message.id %}" class="me-2">📝</a><a href="{% url 'delete-message' group_message.id %}">❌</a></small>
                 </div>
                 {% else %}
@@ -99,7 +99,7 @@
                     <small class="username"><a href="{% url 'user-profile' group_message.sender.id %}" style="text-decoration: none; color: inherit;">
                         {{group_message.sender.username}}
                     </a></small>
-                    <small class="message-time">{{group_message.timestamp|time:"H:i A"}}</small>
+                    <small class="message-time">{{group_message.timestamp}}</small>
                 </div>
                 {% endif %}
                 {% empty %}
@@ -132,6 +132,7 @@
         console.log("Data: ", data);
         const messages = document.getElementById("group-message");
         const messageDiv = document.createElement('div');
+        const timeStamp = document.createElement('small');
         const sender = data.sender;
 
         if (sender === '{{ request.user.username|safe }}') {
@@ -139,8 +140,12 @@
         } else {
             messageDiv.className = "receiver-message bg-light text-left me-auto";
         }
+
+        timeStamp.className = "message-time text-dark";
         
         messageDiv.textContent = data.message;
+
+        timeStamp.textContent = data.time;
 
         if (sender === '{{ request.user.username|safe }}') {
             const editLink = document.createElement("a");
@@ -157,12 +162,22 @@
             small.appendChild(deleteLink);
             messageDiv.appendChild(document.createElement("br"));
             messageDiv.appendChild(small);
-            small.classList.add('edit-and-delete')
+            small.classList.add('edit-and-delete');
+            messageDiv.appendChild(timeStamp);
+        } else {
+            const userNameRef = document.createElement('a');
+            userNameRef.href = `/user-profile/${data.sender.id}`;
+            userNameRef.textContent = sender;
+            userNameRef.style.textDecoration = "none";
+            userNameRef.style.color = "inherit";
+
+            const userName = document.createElement('small');
+            userName.appendChild(userNameRef);
+            userName.className = "username";
+            messageDiv.appendChild(userName);
+            messageDiv.appendChild(timeStamp);
         }
-        messages.insertBefore(messageDiv, messages.firstChild);
-        console.log("message: ", data.message);
-        console.log("type: ", data.type);
-        console.log("sender: ", data.sender);
+        messages.appendChild(messageDiv);
     }
 
     chatSocket.addEventListener('close', () => {console.log("Websocket disconnected")});

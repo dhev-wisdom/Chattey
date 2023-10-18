@@ -89,6 +89,7 @@
         const messages = document.getElementById("chat-message");
         const messageDiv = document.createElement('div');
         const prev = document.getElementById("prev-check");
+        const timeStamp = document.createElement('small');
         const sender = data.sender;
 
         prev.classList.add("hidden");
@@ -99,7 +100,9 @@
             messageDiv.className = "receiver-message bg-light text-left me-auto";
         }
         
+        timeStamp.className = "message-time text-dark";
         messageDiv.textContent = data.message;
+        timeStamp.textContent = data.time;
 
         if (sender === '{{ request.user.username|safe }}') {
             const editLink = document.createElement("a");
@@ -117,6 +120,9 @@
             messageDiv.appendChild(document.createElement("br"));
             messageDiv.appendChild(small);
             small.classList.add("edit-and-delete")
+            messageDiv.appendChild(timeStamp);
+        } else {
+            messageDiv.appendChild(timeStamp);
         }
         messages.insertBefore(messageDiv, messages.firstChild);
     }
