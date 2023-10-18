@@ -45,6 +45,14 @@ class PrivateChatConsumer(AsyncWebsocketConsumer):
             receiver = user_receiver,
         )
         message.save()
+        print(message)
+        logger.info('message %s', message)
+        return message.id
+    
+    @sync_to_async
+    def get_message(self, id):
+        message = Message.objects.get(id=id)
+        return message
 
     async def receive (self, text_data):
         text_data_json = json.loads(text_data)
@@ -52,6 +60,9 @@ class PrivateChatConsumer(AsyncWebsocketConsumer):
         message = text_data_json['message']
         recipients = text_data_json['recipients']
         message_sender = recipients[0]
+        message_id = await self.save_message(message, recipients[0], recipients[1])
+        message_ = await self.get_message(message_id)
+
 
         logger.info('message received from websocket frontend: %s', message)
 
@@ -66,16 +77,28 @@ class PrivateChatConsumer(AsyncWebsocketConsumer):
                         'type': 'chat_message',
                         'message': message,
                         'sender': message_sender,
+                        'id': message_id,
+                        'time': message_.timestamp.strftime('%Y-%m-%d %H:%M:%S'),
+                        'is_read': message_.is_read,
+                        'is_deleted': message_.is_deleted,
+                        'is_edited': message_.is_edited,
                     }
                 )
         logger.info('broadcast signal transferred to chat_message functon')
-        await self.save_message(message, recipients[0], recipients[1])
 
     async def chat_message(self, event):
         message = event['message']
         sender = event['sender']
+        time = event['time']
+        is_read = event['is_read']
+        is_edited = event['is_edited']
+        is_deleted = event['is_deleted']
+        id = event['id']
 
-        await self.send(text_data=json.dumps({'type': 'chat_message', 'message': message, 'sender': sender}))
+        await self.send(text_data=json.dumps({
+            'type': 'chat_message', 'message': message, 'sender': sender, 'time': time,
+            'is_read': is_read, 'is_edited': is_edited, 'is_deleted': is_deleted, 'id': id,
+            }))
         logger.info('message sent to websocket frontend: %s', message)
 
 
@@ -93,7 +116,7 @@ class GroupChatConsumer(AsyncWebsocketConsumer):
         await self.accept()
         logger.info('accepted')
 
-    async def disconnect(self):
+    async def disconnect(self, close_code):
         await self.channel_layer.group_discard(
             self.room_group_name,
             self.channel_name,
@@ -110,6 +133,12 @@ class GroupChatConsumer(AsyncWebsocketConsumer):
             room = room,
         )
         message.save()
+        return message.id
+    
+    @sync_to_async
+    def get_message(self, id):
+        message = Message.objects.get(id=id)
+        return message
 
     async def receive(self, text_data):
         text_data_json = json.loads(text_data)
@@ -118,7 +147,8 @@ class GroupChatConsumer(AsyncWebsocketConsumer):
         room_id = text_data_json.get('room_id')
         print("message type: ", message_type)
         message = text_data_json['message']
-        await self.save_message(message, sender, room_id)
+        message_id = await self.save_message(message, sender, room_id)
+        message_ = await self.get_message(message_id)
         logger.info('message saved to database for room %s', room_id)
         logger.info('message received from websocket frontend for room: %s', room_id)
 
@@ -130,6 +160,10 @@ class GroupChatConsumer(AsyncWebsocketConsumer):
                     'room_id': room_id,
                     'message': message,
                     'sender': sender,
+                    'time': message_.timestamp.strftime('%Y-%m-%d %H:%M:%S'),
+                    'is_read': message_.is_read,
+                    'is_deleted': message_.is_deleted,
+                    'is_edited': message_.is_edited,
                 }
             )
         logger.info('broadcast signal transferred to group_message functon')
@@ -139,10 +173,18 @@ class GroupChatConsumer(AsyncWebsocketConsumer):
         message = event['message']
         room_id = event['room_id']
         sender = event['sender']
+        time = event['time']
+        is_read = event['is_read']
+        is_edited = event['is_edited']
+        is_deleted = event['is_deleted']
 
         await self.send(text_data=json.dumps({
             'type': 'group_message',
             'message': message,
             'room_id': room_id,
             'sender': sender,
+            'is_read': is_read,
+            'is_edited': is_edited,
+            'is_deleted': is_deleted,
+            'time': time,
             }))

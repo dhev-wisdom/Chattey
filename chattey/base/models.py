@@ -12,6 +12,7 @@ def get_default_creator():
 
 class ChatRoom(models.Model):
     name = models.CharField(max_length=50)
+    description = models.CharField(max_length=250, null=True, blank=True)
     participants = models.ManyToManyField(User, related_name='group_chats')
     creator = models.ForeignKey(User, on_delete=models.CASCADE,
                                 related_name='group_chat_creator', editable=False, default=get_default_creator)

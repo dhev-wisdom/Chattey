@@ -142,11 +142,15 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
-STATIC_URL = 'static/'
-# STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+STATIC_URL = '/static/'
+MEDIA_URL = '/images/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static'),
 ]
+# STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
+
+MEDIA_ROOT = BASE_DIR / "static/images"
 
 LOGGING = {
     'version': 1,
@@ -161,6 +165,18 @@ LOGGING = {
         'level': 'DEBUG',
     },
 }
+
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.mailgun.org'
+EMAIL_USE_TLS = True
+EMAIL_PORT = 587
+EMAIL_HOST_USER = "postmaster@sandboxcc9ebba3a47448f7b10d2e44f710d6e3.mailgun.org"
+EMAIL_HOST_PASSWORD = "?UT^+wu63G3PUuf"
+
+DEFAULT_FROM_EMAIL = 'nonsowisdom62@gmail.com'
+EMAIL_USE_SSL = False
+EMAIL_TIMEOUT = None
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field

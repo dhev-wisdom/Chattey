@@ -1,8 +1,15 @@
 {% extends 'base/main.html' %}
 
+{% load static %}
+
+{% block css %}
+    <link rel="stylesheet" href="{% static 'css/index.css' %}">
+{% endblock css %}
+
 {% block title %}
 <title>Home - Chattey</title>
 {% endblock title %}
+
 
 {% block content %}
 {% if messages %}
@@ -10,22 +17,69 @@
     <p>{{message}}</p>
     {% endfor %}
 {% endif %}
-<h1>Welcome to Chattey</h1>
+<header class="hero">
+    <div class="d-flex_">
+        <h1 class="hero-heading">Welcome to Chattey</h1>
+        <p>Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet.</p>
+    </div>
+    <div class="img-container">
+        <img src="{% static 'images/hero-image2.jpg' %}" class="hero-image" alt="Chattey Hero Image">
+    </div>
+  </header>
 
-<ul>
-    {% for user in users %}
-        {% if user.username != request.user.username %}
-        <li><a href="{% url 'pchat' user.username %}">{{user.username}}</a></li>
-        {% endif %}
-    {% endfor %}
-</ul>
-
-{% if request.user.is_authenticated %}
-<h3>Groups you belong to:</h3>
-<ul>
-    {% for group in groups %}
-    <li><a href="{% url 'group-chat' group.id %}">{{group.name}}</a></li>
-    {% endfor %}
-</ul>
-{% endif %}
-{% endblock %}
+  <section class="main-section">
+    <div class="theme-color sect-left">
+        <h2 class="second-heading text-white">Chats</h2>
+        <div>
+            {% for user in users %}
+            {% if user.username != request.user.username %}
+            <div class="person-sect d-flex theme-light align-items-center mb-3">
+                <i class="bi bi-person-circle size1"></i>
+                <div class="d-flex flex-column ms-3 align-items-start">
+                    <div class="name-container mb-0">
+                        <p class="name me-auto"><a href="{% url 'pchat' user.username %}" style="text-decoration: none; color: inherit;">{{user.username|title}}</a></p>
+                        <!-- <p class="time">09:23</p> -->
+                    </div>
+                    <div class="chat-container mt-0">
+                        <p class="last-chat">Last conversation if any</p>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+            {% endfor %}
+            
+        </div>
+    </div>
+    <div class="theme-light sect-right">
+        <h2 class="second-heading">Groups</h2>
+        <div>
+            {% if request.user.is_authenticated %}
+            {% for group in groups %}
+            <div class="person-sect d-flex theme-color text-white align-items-center mb-3">
+                <i class="bi bi-people size1"></i>
+                <div class="d-flex flex-column ms-3 align-items-start">
+                    <div class="name-container mb-0">
+                        <p class="name"><a href="{% url 'group-chat' group.id %}" class="text-white" style="text-decoration: none; color: inherit;">{{group.name|title}}</a></p>
+                        <!-- <p class="time">29/06/2023</p> -->
+                    </div>
+                    <div class="chat-container mt-0">
+                        {% if group.description %}
+                        <p class="group-desc">{{group.description}}</p>
+                        {% else %}
+                        <p class="group-desc">{{group.creator}}</p>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            {% empty %}
+            <p class="name text-center">You do not belong to any group yet.<br />
+            Trying creating a group, joining one and telling the admin to add you</p>
+            {% endfor %}
+            {% else %}
+            <p class="name text-center">Login to view groups</p>
+            {% endif %}
+            
+        </div>
+    </div>
+  </section>
+  {% endblock %}

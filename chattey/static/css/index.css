@@ -71,10 +71,6 @@ button, .button {
 .sect-left, .sect-right {
     padding: 3.5rem 5rem;
     position: relative;
-    /* display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    justify-content: flex-start; */
 }
 .sect-left {
     width: 50%;
@@ -125,6 +121,14 @@ button, .button {
     padding: 2rem 1.5rem;
     border: 2px solid grey;
     border-radius: 20px;
+}
+.group-container {
+    position: relative;
+}
+.back {
+    position: absolute;
+    top: 1rem;
+    left: 3rem;
 }
 
 @media screen and (max-width: 992px) {

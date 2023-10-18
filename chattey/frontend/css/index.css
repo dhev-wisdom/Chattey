@@ -1,0 +1,137 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    position: relative;
+    width: 100vw;
+    overflow-x: hidden;
+    overflow-y: auto;
+    margin: 0;
+    padding: 0;
+}
+.theme-color {
+    background-color: rgb(72, 81, 177);
+}
+.theme-light {
+    background-color: rgb(242, 242, 247);
+}
+.hero-heading {
+    font-size: 6rem;
+}
+.hero {
+    display: flex;
+    row-gap: 1rem;
+    height: 92vh;
+    padding: 0 0 0 5rem;
+}
+.img-container {
+    position: relative;
+    flex: 1;
+}
+.hero-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 0;
+}
+.d-flex_ {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    flex: 1;
+}
+.d-flexx {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-weight: 500;
+}
+.main-section {
+    margin: 0;
+    padding: 0;
+    display: flex;
+    width: 100vw;
+    position: relative;
+}
+.sect-left, .sect-right {
+    padding: 3.5rem 5rem;
+    position: relative;
+    /* display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start; */
+}
+.sect-left {
+    width: 50%;
+}
+.sect-right {
+    width: 50%;
+}
+.second-heading {
+    text-align: center;
+    font-size:2.5rem;
+    margin-bottom: 1.5rem;
+}
+.person-sect {
+    padding: 1rem 2rem;
+    border-radius: 10px;
+}
+.name-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    row-gap: auto;
+    align-items: flex-end;
+}
+.name {
+    font-weight: 600;
+    font-size: 1.1rem;
+    margin: 0;
+}
+.time, .last-chat {
+    color: rgb(75, 73, 73);
+}
+.time, .last-chat, .group-desc {  
+    font-weight: 500;
+    font-size: 0.8rem;
+    margin: 0;
+}
+.group-desc {
+    color: #dfd5d5;
+}
+.size1 {
+    font-size: 3rem;
+}
+.login-form {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    max-width: 65%;
+    padding: 2rem 1.5rem;
+    border: 2px solid grey;
+    border-radius: 20px;
+}
+
+@media screen and (max-width: 992px) {
+    .hero {
+        display: none;
+    }
+    .main-section {
+        flex-direction: column;
+    }
+    .sect-left, .sect-right {
+        width: 100vw;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .hero {
+        display: none;
+    }
+    .sect-left, .sect-right {
+        padding: 3rem 2rem;
+    }
+}

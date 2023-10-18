@@ -4,36 +4,71 @@
 
 
 {% block title %}
+{% if request.user.is_authenticated %}
 <title>Private chat - {{request.user.username}} &amp; {{other_user.username}}</title>
-{% endblock %}
+{% else %}
+<title>Chattey - Private chat</title>
+{% endif %}
+{% endblock title %}
+
+{% block css %}
+    <link rel="stylesheet" href="{% static 'css/index.css' %}">
+    <link rel="stylesheet" href="{% static 'css/pchat.css' %}">
+{% endblock css %}
 
 {% block content %}
-{% if request.user.is_authenticated %}
-<p>This is the beginning of your private chat with {{other_user.username}}</p>
-<p>This chat is end to end encrypted and only you and {{other_user.username}} can view this chat</p>
-<br />
-<div id="chat-messages">
-    {% for chat_message in chat_messages %}
-        {% if chat_message.sender == request.user %}
-        <p style="color: rgb(25, 25, 109)">{{chat_message}}</p>
-        {% else %}
-        <p style="color: rgb(25, 134, 25)">{{chat_message}}</p>
-        {% endif %}
-    {% empty %}
-    <p>This is the beginning of your conversion with {{other_user.username}}</p>
-    {% endfor %}
-</div>
-<div id="chat-message"></div>
-<form id="form" method="post">
-    {% csrf_token %}
-    <input type="text" id="message-input" name="chat">
-    <input type="submit" id="send-message" value="Send">
-</form>
-{% else %}
-<p>Login to view this page</p>
-{% endif %}
 
-<!-- <script src="{% static 'js/private-chat.js' %}"></script> -->
+<section class="pchat-sect">
+    {% if request.user.is_authenticated %}
+        <div class="pchat-div">
+            <a href="{% url 'user-profile' other_user.id %}" style="text-decoration: none; color: inherit;">
+            <div class="person-sect d-flex theme-color text-white align-items-center mb-3">
+                <i class="bi bi-person-circle size2"></i>
+                <div class="d-flex flex-column ms-3 align-items-start">
+                    <div class="name-container mb-0">
+                        <p class="name me-auto">{{other_user.username|title}}</p>
+                    </div>
+                    <div class="chat-container mt-0">
+                        <p class="group-desc">last seen</p>
+                    </div>
+                </div>
+            </div>
+            </a>
+            <div class="chat-area theme-light">
+                <p class="text-center">This chat is end-to-end encrypted 🔒 and only you and {{other_user.username|title}} can view this chat</p>
+                {% for chat_message in chat_messages %}
+                <div class="prev-chat-area">
+                    {% if chat_message.sender == request.user %}
+                    <div class="sender-message theme-color text-white text-right ms-auto">{{chat_message}}
+                        <small class="message-time text-dark">{{chat_message.timestamp|time:"H:i A"}}</small>
+                       <small class="edit-and-delete"><a href="{% url 'edit-message' chat_message.id %}" class="me-2">📝</a><a href="{% url 'delete-message' chat_message.id %}">❌</a></small>
+                    </div>
+                    
+                    {% else %}
+                    <div class="receiver-message bg-light text-left me-auto">{{chat_message}}
+                        <!-- <small class="username"><a href="{% url 'user-profile' chat_message.receiver.id %}" style="text-decoration: none; color: inherit;">
+                            {{chat_message.receiver.username}}
+                        </a></small> -->
+                        <small class="message-time">{{chat_message.timestamp|time:"H:i A"}}</small>
+                    </div>
+                    {% endif %}
+                </div>
+                {% empty %}
+                <p class="text-center" id="prev-check">You don't have a previous conversation with {{other_user.username|title}}</p>
+                {% endfor %}
+                <div class="prev-chat-area" id="chat-message"></div>
+                <form method="post" id="form" class="send-form">
+                    {% csrf_token %}
+                    <input type="text" id="message-input" name="chat" class="message" placeholder="Enter your message...">
+                    <input type="submit" value="Send" id="send-message" class="send theme-color text-white ms-auto">
+                </form>
+            </div>
+        </div>
+        {% else %}
+        <p>Login to view this page</p>
+        {% endif %}
+      </section>
+
 <script>
     const url = 'ws://' + window.location.host + '/ws/private-chat/{{ other_user.username|safe }}/';
     console.log('url ', url);
@@ -43,18 +78,36 @@
 
     chatSocket.onmessage = (e) => {
         const data = JSON.parse(e.data);
-        console.log("Data: ", data);
         const messages = document.getElementById("chat-message");
-        const divMessages = document.getElementById("chat-messages");
+        const messageDiv = document.createElement('div');
         const sender = data.sender;
+
         if (sender === '{{ request.user.username|safe }}') {
-            messages.insertAdjacentHTML('beforeend', `<p style="color: rgb(25, 25, 109)">${data.message}</p>`);
+            messageDiv.className = "sender-message theme-color text-white text-right ms-auto";
         } else {
-            messages.insertAdjacentHTML('beforeend', `<p style="color: rgb(25, 134, 25)">${data.message}</p>`);
+            messageDiv.className = "receiver-message bg-light text-left me-auto";
         }
-        console.log("message: ", data.message);
-        console.log("type: ", data.type);
-        console.log("sender: ", data.sender);
+        
+        messageDiv.textContent = data.message;
+
+        if (sender === '{{ request.user.username|safe }}') {
+            const editLink = document.createElement("a");
+            editLink.href = `/edit-message/${data.id}/`;
+            editLink.textContent = "📝";
+            editLink.classList.add("me-2");
+
+            const deleteLink = document.createElement("a");
+            deleteLink.href = `/delete-message/${data.id}/`;
+            deleteLink.textContent = "❌";
+
+            const small = document.createElement("small");
+            small.appendChild(editLink);
+            small.appendChild(deleteLink);
+            messageDiv.appendChild(document.createElement("br"));
+            messageDiv.appendChild(small);
+            small.classList.add("edit-and-delete")
+        }
+        messages.insertBefore(messageDiv, messages.firstChild);
     }
 
     chatSocket.addEventListener('close', () => {console.log("Websocket disconnected")});
@@ -63,6 +116,7 @@
     document.querySelector("#send-message").onclick = (e) => {
         e.preventDefault();
         const messageInput = document.querySelector("#message-input");
+        
         const message = {
             type: 'chat_message',
             recipients: [ '{{ request.user.username|safe }}', '{{ other_user.username|safe }}' ],

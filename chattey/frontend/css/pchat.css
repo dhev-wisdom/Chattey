@@ -1,0 +1,89 @@
+.pchat-sect {
+    margin: 1rem 12rem;
+}
+.pchat-div {
+    border-radius: 20px;
+    padding: 2rem
+}
+.chat-area {
+    padding: 1.5rem;
+    position: relative;
+    border-radius: 0 0 15px 15px;
+}
+.prev-chat-area {
+    /* padding: 1.5rem; */
+    position: relative;
+}
+.sender-message, .receiver-message {
+    width: auto;
+    max-width: 75%;
+    padding: 1rem;
+    border-radius: 5px;
+    margin: 1rem 0;
+
+}
+.sender-message {
+    border-radius: 15px 25px 0 15px;
+}
+.receiver-message {
+    border-radius: 0 15px 15px 25px;
+}
+.send-form {
+    display: flex;
+    row-gap: 1rem;
+    width: 100%;
+    margin-top: 1.5rem;
+}
+.message {
+    padding: .5rem 1rem;
+    border: 1px solid grey;
+    border-radius: 10px;
+    width: 88%;
+}
+.send {
+    text-align: center;
+    border: none;
+    border-radius: 10px;
+    font-weight: 500;
+    padding: .5rem 1rem;
+    width: 10%;
+}
+.size2 {
+    font-size: 2rem;
+}
+
+@media screen and (max-width: 1120px) {
+    .pchat-sect {
+        margin: 1rem 4rem;
+    }
+    .message {
+        width: 88%;
+    }
+    .send {
+        width: auto;
+    }
+}
+
+@media screen and (max-width: 992px) {
+    .pchat-sect {
+        margin: 1rem 3rem;
+    }
+    .message {
+        width: 80%;
+    }
+    .send {
+        width: auto;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .pchat-sect {
+        margin: .5rem 1rem;
+    }
+    .message {
+        width: 80%;
+    }
+    .send {
+        width: auto;
+    }
+}
