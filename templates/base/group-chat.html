@@ -1,0 +1,201 @@
+{% extends 'base/main.html' %}
+
+{% load static %}
+
+{% block title %}
+<title>Chattey - {{group.name}} Group Conversion</title>
+{% endblock %}
+
+{% block css %}
+    <link rel="stylesheet" href="{% static 'css/index.css' %}">
+    <link rel="stylesheet" href="{% static 'css/pchat.css' %}">
+{% endblock css %}
+
+{% block content %}
+
+
+<!-- <div>
+    <p><a href="{% url 'edit-group' group.id %}">Edit Group</a></p>
+    <p><a href="{% url 'delete-group' group.id %}">Delete Group</a></p>
+</div>
+{% if messages %}
+{% for message in messages %}
+<p>{{message}}</p>
+{% endfor %}
+{% endif %}
+<h3>Participants</h3>
+<ul>
+    {% for participant in group.participants.all %}
+        {% if participant.id == group.creator.id %}
+        <li><b>{{participant.username}}</b> - (Admin)</li>
+        {% else %}
+        <li><a href="{% url 'pchat' participant.username %}">{{participant.username}}</a></li>
+        {% endif %}
+    {% endfor %}
+</ul>
+{% if request.user.is_authenticated %}
+
+<br />
+<div id="group-messages">
+    {% for group_message in group_messages %}
+        {% if group_message.sender == request.user %}
+        <p style="color: rgb(25, 25, 109)">{{group_message}}</p>
+        {% else %}
+        <p style="color: rgb(25, 134, 25)">{{group_message}} <small> - {{group_message.sender}}</small></p>
+        {% endif %}
+    {% empty %}
+    <p>This is the beginning of your group conversation in {{group.name|title}}</p>
+    {% endfor %}
+</div>
+<div id="group-message"></div>
+<form method="post">
+    <input type="text" name="chat" id="message-input">
+    <input type="submit" id="send-message" value="Send">
+</form>
+{% endif %} -->
+
+
+<section class="pchat-sect">
+    <div class="pchat-div">
+        <a href="{% url 'group-profile' group.id %}" style="text-decoration: none; color: inherit;">
+        <div class="person-sect d-flex theme-color text-white align-items-center mb-3">
+            <div class="d-flex">
+            <i class="bi bi-people size2"></i>
+            <div class="d-flex flex-column ms-3 align-items-start">
+                <div class="name-container mb-0">
+                    <p class="name me-auto">{{group.name|title}}</p>
+                </div>
+                <div class="chat-container mt-0">
+                    {% if group.description %}
+                    <p class="group-desc">{{group.description}}</p>
+                    {% else %}
+                    <p class="group-desc">{{group.creator}}</p>
+                    {% endif %}
+                </div>
+            </div>
+            </div>
+            <div class="ms-auto">
+                <a href="{% url 'home' %}">
+                    <i class="bi bi-arrow-left size3"></i>
+                </a>
+            </div>
+        </div>
+        </a>
+        <div class="chat-area theme-light">
+            {% if messages %}
+            {% for message in messages %}
+            <p>{{message}}</p>
+            {% endfor %}
+            {% endif %}
+            <div class="prev-chat-area" id="group-messages">
+                {% for group_message in group_messages %}
+                {% if group_message.sender == request.user %}
+                <div class="sender-message theme-color text-white text-right ms-auto">{{group_message}}
+                    <small class="message-time text-dark">{{group_message.timestamp}}</small>
+                    <small class="edit-and-delete"><a href="{% url 'edit-message' group_message.id %}" class="me-2">📝</a><a href="{% url 'delete-message' group_message.id %}">❌</a></small>
+                </div>
+                {% else %}
+                <div class="receiver-message bg-light text-left me-auto">{{group_message}}
+                    <small class="username"><a href="{% url 'user-profile' group_message.sender.id %}" style="text-decoration: none; color: inherit;">
+                        {{group_message.sender.username}}
+                    </a></small>
+                    <small class="message-time">{{group_message.timestamp}}</small>
+                </div>
+                {% endif %}
+                {% empty %}
+                <p class="last-chat text-center">This is the beginning of your group conversation in {{group.name|title}}</p>
+                {% endfor %}
+            </div>
+            <div class="prev-chat-area" id="group-message"></div>
+            <form method="post" class="send-form">
+                <input type="text" name="chat" id="message-input" class="message" placeholder="Enter your message...">
+                <input type="submit" id="send-message" value="Send" class="send theme-color text-white ms-auto">
+            </form>
+        </div>
+    </div>
+  </section>
+
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const messageArea = document.getElementById("message-input");
+        if (messageArea) messageArea.focus();
+    });
+    const url = 'ws://' + window.location.host + '/ws/group-chat/{{ group.id|safe }}/';
+    console.log('url ', url);
+    const chatSocket = new WebSocket(url);
+
+    chatSocket.addEventListener('open', () => {console.log("Websocket connected")});
+
+    chatSocket.onmessage = (e) => {
+        const data = JSON.parse(e.data);
+        console.log("Data: ", data);
+        const messages = document.getElementById("group-message");
+        const messageDiv = document.createElement('div');
+        const timeStamp = document.createElement('small');
+        const sender = data.sender;
+
+        if (sender === '{{ request.user.username|safe }}') {
+            messageDiv.className = "sender-message theme-color text-white text-right ms-auto";
+        } else {
+            messageDiv.className = "receiver-message bg-light text-left me-auto";
+        }
+
+        timeStamp.className = "message-time text-dark";
+        
+        messageDiv.textContent = data.message;
+
+        timeStamp.textContent = data.time;
+
+        if (sender === '{{ request.user.username|safe }}') {
+            const editLink = document.createElement("a");
+            editLink.href = `/edit-message/${data.id}/`;
+            editLink.textContent = "📝";
+            editLink.classList.add("me-2");
+
+            const deleteLink = document.createElement("a");
+            deleteLink.href = `/delete-message/${data.id}/`;
+            deleteLink.textContent = "❌";
+
+            const small = document.createElement("small");
+            small.appendChild(editLink);
+            small.appendChild(deleteLink);
+            messageDiv.appendChild(document.createElement("br"));
+            messageDiv.appendChild(small);
+            small.classList.add('edit-and-delete');
+            messageDiv.appendChild(timeStamp);
+        } else {
+            const userNameRef = document.createElement('a');
+            userNameRef.href = `/user-profile/${data.sender.id}`;
+            userNameRef.textContent = sender;
+            userNameRef.style.textDecoration = "none";
+            userNameRef.style.color = "inherit";
+
+            const userName = document.createElement('small');
+            userName.appendChild(userNameRef);
+            userName.className = "username";
+            messageDiv.appendChild(userName);
+            messageDiv.appendChild(timeStamp);
+        }
+        messages.appendChild(messageDiv);
+    }
+
+    chatSocket.addEventListener('close', () => {console.log("Websocket disconnected")});
+
+
+    document.querySelector("#send-message").onclick = (e) => {
+        e.preventDefault();
+        const messageInput = document.querySelector("#message-input");
+        const message = {
+            type: 'group_message',
+            room_id: '{{ group.id|safe }}',
+            sender: '{{ request.user.username|safe }}',
+            message: messageInput.value,
+        }
+        chatSocket.send(JSON.stringify(message));
+        console.log('Message ' + message + ' sent to backend websocket');
+        messageInput.value = '';
+    }
+</script>
+
+{%  endblock %}

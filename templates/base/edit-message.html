@@ -1,0 +1,31 @@
+{% extends 'base/main.html' %}
+
+{% load static %}
+{% block title %}
+<title>Edit Message</title>
+{% endblock %}
+
+{% block css %}
+    <link rel="stylesheet" href="{% static 'css/index.css' %}">
+    <link rel="stylesheet" href="{% static 'css/pchat.css' %}">
+{% endblock css %}
+
+{% block content %}
+<div class="border text-center p-5 m-5">
+<p class="name mt-4">Edit {{message.body}}</p>
+
+<form method="post" class="edit-message-form">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <input type="submit" class="send" value="Edit">
+</form>
+{% if message.receiver %}
+<div>
+    <a href="{% url 'pchat' message.receiver %}" class="name">Go Back</a>
+</div>
+{% else %}
+<a href="{% url 'group-chat' room.id %}" class="name">Go Back</a>
+{% endif %}
+</div>
+
+{% endblock %}

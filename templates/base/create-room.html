@@ -1,0 +1,30 @@
+{% extends 'base/main.html' %}
+
+{% load static %}
+
+{% block title %}
+<title>{{request.user.username}} - Start group chat</title>
+{% endblock %}
+
+{% block css %}
+<link rel="stylesheet" href="{% static 'css/pchat.css' %}">
+<link rel="stylesheet" href="{% static 'css/group-chat.css' %}">
+<link rel="stylesheet" href="{% static 'css/index.css' %}">
+{% endblock css %}
+
+{% block content %}
+
+<div class="border m-5 p-0">
+    <div class="d-flex w-100 theme-color text-white align-items-center mb-3">
+        <div class="d-flex flex-column text-center p-5 align-items-start">
+            <h1 class="text-center p-5 fs-1">Start a group chat</h1>
+        </div>
+    </div>
+    <form method="post" class="p-5">
+        {% csrf_token %}
+        <p class="name mb-3">Group chats are a great way to have big fun together</p>
+        {{ form.as_p }}
+        <input class="btn" type="submit" value="Create Group Chat">
+    </form>
+</div>
+{% endblock %}
