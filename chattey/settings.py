@@ -6,7 +6,9 @@ import channels.layers
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-SECRET_KEY = os.environ.get("SECRET_KEY")
+# SECRET_KEY = os.environ.get("SECRET_KEY")
+
+SECRET_KEY = "django-insecure-uaemq3=wrhszd!1t@0jcanwl_!+pgbj@d@ck4%nw8o+5%b+j9$"
 
 DEBUG = False
 
@@ -57,13 +59,9 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'chattey.wsgi.application'
-
 ASGI_APPLICATION = 'chattey.asgi.application'
 
-
-# Database
-# https://docs.djangoproject.com/en/4.2/ref/settings/#databases
+WSGI_APPLICATION = 'chattey.wsgi.application'
 
 DATABASES = {
     'default': {
@@ -86,16 +84,12 @@ DATABASES = {
 # db_from_env = dj_database_url.config(conn_max_age=500)
 # DATABASES['default'].update(db_from_env)
 
-# host = os.environ.get('HOST')
 
-# CHANNEL_LAYERS = {
-#     'default': {
-#         'BACKEND': 'channels_redis.core.RedisChannelLayer',
-#         'CONFIG': {
-#             "hosts": [os.environ.get("REDIS_URL")],
-#         },
-#     },
-# }
+DATABASES['default'] = dj_database_url.config(
+    default="postgres://jofkgxjphqbuic:e85d24e6ed803cfdfcfc5ae0dd74491d5f325d1f5c852e6290ef6d30a794a562@ec2-52-45-200-167.compute-1.amazonaws.com:5432/dekiu1b4dkvfba",
+    conn_max_age=600,
+    conn_health_checks=True,
+)
 
 CHANNEL_LAYERS = {
     'default': {
@@ -115,9 +109,6 @@ CHANNEL_LAYERS = {
 
 
 
-# Password validation
-# https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
-
 AUTH_PASSWORD_VALIDATORS = [
     {
         'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
@@ -134,9 +125,6 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 
-# Internationalization
-# https://docs.djangoproject.com/en/4.2/topics/i18n/
-
 LANGUAGE_CODE = 'en-us'
 
 TIME_ZONE = 'UTC'
@@ -145,9 +133,6 @@ USE_I18N = True
 
 USE_TZ = True
 
-
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/4.2/howto/static-files/
 
 STATIC_URL = '/static/'
 MEDIA_URL = '/images/'
@@ -175,6 +160,8 @@ LOGGING = {
 
 COLLECTSTATIC = False
 
+WHITENOISE_ROOT = '../static/'
+
 
 # EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 # EMAIL_HOST = 'smtp.mailgun.org'
@@ -187,8 +174,6 @@ COLLECTSTATIC = False
 # EMAIL_USE_SSL = False
 # EMAIL_TIMEOUT = None
 
-# Default primary key field type
-# https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
