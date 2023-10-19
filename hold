@@ -1,0 +1,108 @@
+How do I resolve this exception of App's are not loaded yet I get while trying to deploy a django-channels app on heroku
+
+I guess it's an issue coming from my order of imports probably in settings.py, asgi.py or routing.py but I have been on it for hours and I haven't gotten any solution.
+
+Below are the relevant parts of my settings.py:
+`import os
+from pathlib import Path
+import dj_database_url
+import django_heroku
+import channels.layers
+
+BASE_DIR = Path(__file__).resolve().parent.parent
+
+SECRET_KEY = os.environ.get("SECRET_KEY")
+
+DEBUG = False
+
+ALLOWED_HOSTS = ['chattey-ebd43eb5547a.herokuapp.com', '127.0.0.1:8000']
+
+
+INSTALLED_APPS = [
+    # 'djongo'
+    'channels',
+    'base',
+    'django.contrib.admin',
+    'django.contrib.auth',
+    'django.contrib.contenttypes',
+    'django.contrib.sessions',
+    'django.contrib.messages',
+    'django.contrib.staticfiles',
+]
+
+MIDDLEWARE = [
+    'django.middleware.security.SecurityMiddleware',
+    'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.middleware.common.CommonMiddleware',
+    'django.middleware.csrf.CsrfViewMiddleware',
+    'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'django.contrib.messages.middleware.MessageMiddleware',
+    'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
+    # 'channels.middleware.WebsocketMiddleware',
+]`
+
+...
+
+`WSGI_APPLICATION = 'chattey.wsgi.application'
+
+ASGI_APPLICATION = 'chattey.asgi.application'`
+
+...
+
+`STATIC_URL = '/static/'
+MEDIA_URL = '/images/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'static'),
+]
+STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
+
+MEDIA_ROOT = BASE_DIR / "static/images"`
+...
+`django_heroku.settings(locals())`
+
+
+Procfile:
+`web: daphne chattey.asgi:application --port $PORT --bind 0.0.0.0`
+
+asgi.py:
+`import os
+import django
+
+from django.core.asgi import get_asgi_application
+from channels.auth import AuthMiddlewareStack
+from channels.routing import ProtocolTypeRouter, URLRouter
+from base.routing import websocket_urlpatterns
+
+
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'chattey.settings')
+django.setup()
+
+application = ProtocolTypeRouter({
+    "http": get_asgi_application(),
+    "websocket": AuthMiddlewareStack(
+        URLRouter(websocket_urlpatterns)
+    )
+})`
+
+routing.py:
+`from django.urls import path, re_path
+from .consumers import PrivateChatConsumer, GroupChatConsumer
+
+websocket_urlpatterns = [
+    path('wss/private-chat/<str:username>/', PrivateChatConsumer.as_asgi()),
+    path('wss/group-chat/<int:id>/', GroupChatConsumer.as_asgi()),
+    # re_path(r"ws/private-chat/(P<user_id>\d+)/$", PrivateChatConsumer.as_asgi()),
+    # re_path(r"ws/group-chat/(P<group_id>\d+)/$", GroupChatConsumer.as_asgi())
+]`
+
+frontend url:
+`const url = 'wss://' + window.location.host + '/wss/group-chat/{{ group.id|safe }}/';`
+...
+`const url = 'wss://' + window.location.host + '/wss/private-chat/{{ other_user.username|safe }}/';`
+
+
+I have tried ordering the imports in settings.py differently
+
+I have also tried same for INSTALLED_APPS sections and the asgi.py but I get the same response all the time
