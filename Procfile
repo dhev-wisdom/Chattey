@@ -1,1 +1,1 @@
-daphne chattey.asgi:application --port $PORT
+web: daphne chattey.asgi:application --port $PORT --bind 0.0.0.0
