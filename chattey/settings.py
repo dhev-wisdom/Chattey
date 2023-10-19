@@ -1,5 +1,5 @@
-from pathlib import Path
 import os
+from pathlib import Path
 import dj_database_url
 import django_heroku
 import channels.layers
@@ -65,24 +65,9 @@ TEMPLATES = [
     },
 ]
 
-ASGI_APPLICATION = 'chattey.asgi.application'
-
 WSGI_APPLICATION = 'chattey.wsgi.application'
 
-CHANNEL_LAYERS = {
-    'default': {
-        'BACKEND': 'channels_redis.core.RedisChannelLayer',
-        'CONFIG': {
-            "hosts": ["postgres://jofkgxjphqbuic:e85d24e6ed803cfdfcfc5ae0dd74491d5f325d1f5c852e6290ef6d30a794a562@ec2-52-45-200-167.compute-1.amazonaws.com:5432/dekiu1b4dkvfba"],
-        },
-    },
-}
-
-# CHANNEL_LAYERS = {
-#     'default': {
-#         'BACKEND': 'channels.layers.InMemoryChannelLayer',
-#     },
-# }
+ASGI_APPLICATION = 'chattey.asgi.application'
 
 
 # Database
@@ -110,6 +95,21 @@ DATABASES = {
 # DATABASES['default'].update(db_from_env)
 
 # host = os.environ.get('HOST')
+
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'channels_redis.core.RedisChannelLayer',
+        'CONFIG': {
+            "hosts": ["postgres://jofkgxjphqbuic:e85d24e6ed803cfdfcfc5ae0dd74491d5f325d1f5c852e6290ef6d30a794a562@ec2-52-45-200-167.compute-1.amazonaws.com:5432/dekiu1b4dkvfba"],
+        },
+    },
+}
+
+# CHANNEL_LAYERS = {
+#     'default': {
+#         'BACKEND': 'channels.layers.InMemoryChannelLayer',
+#     },
+# }
 
 
 
