@@ -17,14 +17,13 @@ SECRET_KEY = os.environ.get("SECRET_KEY")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['https://chattey-ebd43eb5547a.herokuapp.com/', '127.0.0.1:8000']
+ALLOWED_HOSTS = ['chattey-ebd43eb5547a.herokuapp.com', '127.0.0.1:8000']
 
 
 # Application definition
 
 INSTALLED_APPS = [
     # 'djongo',
-    'daphne',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -91,39 +90,29 @@ CHANNEL_LAYERS = {
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': BASE_DIR / 'db.sqlite3',
-#     }
-# }
-
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': "dekiu1b4dkvfba",
-        'USER': "jofkgxjphqbuic",
-        'PASSWORD': "e85d24e6ed803cfdfcfc5ae0dd74491d5f325d1f5c852e6290ef6d30a794a562",
-        'HOST': "ec2-52-45-200-167.compute-1.amazonaws.com",
-        'PORT': 5432,
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
+
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql_psycopg2',
+#         'NAME': "dekiu1b4dkvfba",
+#         'USER': "jofkgxjphqbuic",
+#         'PASSWORD': "e85d24e6ed803cfdfcfc5ae0dd74491d5f325d1f5c852e6290ef6d30a794a562",
+#         'HOST': "ec2-52-45-200-167.compute-1.amazonaws.com",
+#         'PORT': 5432,
+#     }
+# }
 
 # db_from_env = dj_database_url.config(conn_max_age=500)
 # DATABASES['default'].update(db_from_env)
 
 # host = os.environ.get('HOST')
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'djongo',
-#         'NAME': 'chattey',
-#         'ENFORCE_SCHEMA': False,
-#         'CLIENT': {
-#             'host': host
-#         }  
-#     }
-# }
 
 
 
