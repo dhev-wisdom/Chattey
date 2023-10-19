@@ -24,16 +24,14 @@ ALLOWED_HOSTS = ['chattey-ebd43eb5547a.herokuapp.com', '127.0.0.1:8000']
 
 INSTALLED_APPS = [
     # 'djongo'
+    'channels',
+    'base',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-
-    # External
-    'base.apps.BaseConfig',
-    'channels',
 ]
 
 MIDDLEWARE = [
