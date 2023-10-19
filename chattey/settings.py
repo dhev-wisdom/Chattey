@@ -23,7 +23,7 @@ ALLOWED_HOSTS = ['chattey-ebd43eb5547a.herokuapp.com', '127.0.0.1:8000']
 # Application definition
 
 INSTALLED_APPS = [
-    # 'djongo',
+    # 'djongo'
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
