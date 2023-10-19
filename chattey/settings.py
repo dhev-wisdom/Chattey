@@ -76,7 +76,7 @@ CHANNEL_LAYERS = {
     'default': {
         'BACKEND': 'channels_redis.core.RedisChannelLayer',
         'CONFIG': {
-            "hosts": [os.environ.get('REDIS_URL', 'redis://localhost:6379')],
+            "hosts": ["postgres://jofkgxjphqbuic:e85d24e6ed803cfdfcfc5ae0dd74491d5f325d1f5c852e6290ef6d30a794a562@ec2-52-45-200-167.compute-1.amazonaws.com:5432/dekiu1b4dkvfba"],
         },
     },
 }
@@ -101,11 +101,11 @@ CHANNEL_LAYERS = {
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': os.environ.get("DATABASE_NAME"),
-        'USER': os.environ.get("DATABASE_USER"),
-        'PASSWORD': os.environ.get("DATABASE_PASSWORD"),
-        'HOST': os.environ.get("DATABASE_HOST"),
-        'PORT': os.environ.get("DATABASE_PORT"),
+        'NAME': "dekiu1b4dkvfba",
+        'USER': "jofkgxjphqbuic",
+        'PASSWORD': "e85d24e6ed803cfdfcfc5ae0dd74491d5f325d1f5c852e6290ef6d30a794a562",
+        'HOST': "ec2-52-45-200-167.compute-1.amazonaws.com",
+        'PORT': 5432,
     }
 }
 
