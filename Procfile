@@ -1,1 +1,1 @@
-web: daphne -b 0.0.0.0 -p 5000 chattey.asgi:application
+web: daphne -b 0.0.0.0 -p $PORT chattey.asgi:application
