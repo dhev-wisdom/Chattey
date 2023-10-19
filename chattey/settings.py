@@ -17,7 +17,7 @@ INSTALLED_APPS = [
     # 'djongo'
     'channels',
     'base',
-    'daphne',
+    'daphne'
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -92,7 +92,7 @@ CHANNEL_LAYERS = {
     'default': {
         'BACKEND': 'channels_redis.core.RedisChannelLayer',
         'CONFIG': {
-            "hosts": ["redis://:d7479bq4efbb3bn64fyz8k752vmdsvcvw1xkwts34jg0m8q6exgp@canny-pine-a4a74fff08.redisgreen.net:11042"],
+            "hosts": ["rediss://:p83b07a271d77b2610ac869b66a35b78b37b2b54e114b8c9c22ac2fe9ca18970d@ec2-44-218-3-195.compute-1.amazonaws.com:14340"],
         },
     },
 }
