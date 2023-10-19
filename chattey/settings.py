@@ -17,7 +17,7 @@ INSTALLED_APPS = [
     # 'djongo'
     'channels',
     'base',
-    'daphne'
+    'daphne',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -172,6 +172,8 @@ LOGGING = {
         'level': 'DEBUG',
     },
 }
+
+COLLECTSTATIC = False
 
 
 # EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
