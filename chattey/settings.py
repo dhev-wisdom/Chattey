@@ -88,11 +88,20 @@ DATABASES = {
 
 # host = os.environ.get('HOST')
 
+# CHANNEL_LAYERS = {
+#     'default': {
+#         'BACKEND': 'channels_redis.core.RedisChannelLayer',
+#         'CONFIG': {
+#             "hosts": [os.environ.get("REDIS_URL")],
+#         },
+#     },
+# }
+
 CHANNEL_LAYERS = {
     'default': {
         'BACKEND': 'channels_redis.core.RedisChannelLayer',
         'CONFIG': {
-            "hosts": [os.environ.get("REDIS_URL")],
+            "hosts": ["rediss://:p83b07a271d77b2610ac869b66a35b78b37b2b54e114b8c9c22ac2fe9ca18970d@ec2-44-218-3-195.compute-1.amazonaws.com:14340"],
         },
     },
 }
