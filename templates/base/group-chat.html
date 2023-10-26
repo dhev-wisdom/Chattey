@@ -121,7 +121,7 @@
         const messageArea = document.getElementById("message-input");
         if (messageArea) messageArea.focus();
     });
-    const url = 'wss://' + window.location.host + '/wss/group-chat/{{ group.id|safe }}/';
+    const url = 'ws://' + window.location.host + '/ws/group-chat/{{ group.id|safe }}/';
     console.log('url ', url);
     const chatSocket = new WebSocket(url);
 
@@ -134,6 +134,7 @@
         const messageDiv = document.createElement('div');
         const timeStamp = document.createElement('small');
         const sender = data.sender;
+        const sender_id = data.sender_id;
 
         if (sender === '{{ request.user.username|safe }}') {
             messageDiv.className = "sender-message theme-color text-white text-right ms-auto";
@@ -166,7 +167,7 @@
             messageDiv.appendChild(timeStamp);
         } else {
             const userNameRef = document.createElement('a');
-            userNameRef.href = `/user-profile/${data.sender.id}`;
+            userNameRef.href = `/user-profile/${data.sender_id}`;
             userNameRef.textContent = sender;
             userNameRef.style.textDecoration = "none";
             userNameRef.style.color = "inherit";

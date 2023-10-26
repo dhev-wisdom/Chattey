@@ -130,6 +130,25 @@ button, .button {
     top: 1rem;
     left: 3rem;
 }
+#scrollToTopButton {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 99;
+    border: none;
+    outline: none;
+    font-weight: 600;
+    background-color: rgb(72, 81, 177);
+    cursor: pointer;
+    padding: 6.5px 10px;
+    border-radius: 50%;
+    transition: background-color ease-in-out .5s;
+}
+#scrollToTopButton:hover {
+    background-color: rgba(72, 81, 177, .7);
+}
+
+
 
 @media screen and (max-width: 992px) {
     .hero {

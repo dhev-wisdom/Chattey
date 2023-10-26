@@ -33,19 +33,21 @@
     </div>
 
     <div class="py-4 px-5 mb-3">
-        <h2 class="mb-4">Friends</h2>
+        <h2 class="mb-4">{{user.username|title}}'s Friends</h2>
         <div>
             {% for friend in users.all %}
             {% if friend != request.user %}
+            {% if friend != user %}
             <p><a href="{% url 'pchat' friend.username %}" style="text-decoration: none; color: inherit;">
                 {{friend.username|title}}</a></p>
+            {% endif %}
             {% endif %}
             {% endfor %}
         </div>
     </div>
 
     <div class="py-4 px-5">
-        <h2 class="mb-4">Groups</h2>
+        <h2 class="mb-4">{{user.username|title}}'s Groups</h2>
         <div>
             {% for group in groups %}
             <p><a href="{% url 'group-chat' group.id %}" style="text-decoration: none; color: inherit;">

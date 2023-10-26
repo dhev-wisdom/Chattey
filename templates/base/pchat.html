@@ -30,12 +30,16 @@
                         <p class="name me-auto">{{other_user.username|title}}</p>
                     </div>
                     <div class="chat-container mt-0">
-                        <p class="group-desc">last seen</p>
+                        {% if other_user.last_login %}
+                        <p class="group-desc">Last seen {{other_user.last_login|timesince}} ago</p>
+                        {% else %}
+                        <p class="group-desc">Joined {{other_user.date_joined}}</p>
+                        {% endif %}
                     </div>
                 </div>
                 </div>
                 <div class="ms-auto">
-                    <a href="{{request.META.HTTP_REFERER}}">
+                    <a href="{% url 'home' %}">
                         <i class="bi bi-arrow-left size3"></i>
                     </a>
                 </div>
@@ -47,13 +51,16 @@
                 <div class="prev-chat-area">
                     {% if chat_message.sender == request.user %}
                     <div class="sender-message theme-color text-white text-right ms-auto">{{chat_message}}
-                        <small class="message-time text-dark">{{chat_message.timestamp|time:"H:i A"}}</small>
-                       <small class="edit-and-delete"><a href="{% url 'edit-message' chat_message.id %}" class="me-2">📝</a><a href="{% url 'delete-message' chat_message.id %}">❌</a></small>
+                       <small class="message-time text-dark">{{chat_message.timestamp}}</small>
+                       <small class="edit-and-delete">
+                        <a href="{% url 'edit-message' chat_message.id %}" class="me-2">📝</a>
+                        <a href="{% url 'delete-message' chat_message.id %}">❌</a>
+                       </small>
                     </div>
                     
                     {% else %}
                     <div class="receiver-message bg-light text-left me-auto">{{chat_message}}
-                        <small class="message-time">{{chat_message.timestamp|time:"H:i A"}}</small>
+                        <small class="message-time">{{chat_message.timestamp}}</small>
                     </div>
                     {% endif %}
                 </div>
@@ -78,7 +85,7 @@
         const messageArea = document.getElementById("message-input");
         if (messageArea) messageArea.focus();
     });
-    const url = 'wss://' + window.location.host + '/wss/private-chat/{{ other_user.username|safe }}/';
+    const url = 'ws://' + window.location.host + '/ws/private-chat/{{ other_user.username|safe }}/';
     console.log('url ', url);
     const chatSocket = new WebSocket(url);
 
@@ -124,7 +131,7 @@
         } else {
             messageDiv.appendChild(timeStamp);
         }
-        messages.insertBefore(messageDiv, messages.firstChild);
+        messages.appendChild(messageDiv);
     }
 
     chatSocket.addEventListener('close', () => {console.log("Websocket disconnected")});

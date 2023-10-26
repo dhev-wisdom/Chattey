@@ -10,9 +10,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = "django-insecure-uaemq3=wrhszd!1t@0jcanwl_!+pgbj@d@ck4%nw8o+5%b+j9$"
 
-DEBUG = False
+DEBUG = True
 
-ALLOWED_HOSTS = ['chattey-ebd43eb5547a.herokuapp.com', '127.0.0.1:8000']
+ALLOWED_HOSTS = ['chattey-ebd43eb5547a.herokuapp.com', '127.0.0.1']
 
 
 INSTALLED_APPS = [
@@ -36,7 +36,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware',
+    # 'whitenoise.middleware.WhiteNoiseMiddleware',
     # 'channels.middleware.WebsocketMiddleware',
 ]
 
@@ -85,26 +85,26 @@ DATABASES = {
 # DATABASES['default'].update(db_from_env)
 
 
-DATABASES['default'] = dj_database_url.config(
-    default="postgres://jofkgxjphqbuic:e85d24e6ed803cfdfcfc5ae0dd74491d5f325d1f5c852e6290ef6d30a794a562@ec2-52-45-200-167.compute-1.amazonaws.com:5432/dekiu1b4dkvfba",
-    conn_max_age=600,
-    conn_health_checks=True,
-)
-
-CHANNEL_LAYERS = {
-    'default': {
-        'BACKEND': 'channels_redis.core.RedisChannelLayer',
-        'CONFIG': {
-            "hosts": ["rediss://:p83b07a271d77b2610ac869b66a35b78b37b2b54e114b8c9c22ac2fe9ca18970d@ec2-44-218-3-195.compute-1.amazonaws.com:14340"],
-        },
-    },
-}
+# DATABASES['default'] = dj_database_url.config(
+#     default="postgres://jofkgxjphqbuic:e85d24e6ed803cfdfcfc5ae0dd74491d5f325d1f5c852e6290ef6d30a794a562@ec2-52-45-200-167.compute-1.amazonaws.com:5432/dekiu1b4dkvfba",
+#     conn_max_age=600,
+#     conn_health_checks=True,
+# )
 
 # CHANNEL_LAYERS = {
 #     'default': {
-#         'BACKEND': 'channels.layers.InMemoryChannelLayer',
+#         'BACKEND': 'channels_redis.core.RedisChannelLayer',
+#         'CONFIG': {
+#             "hosts": ["rediss://:p83b07a271d77b2610ac869b66a35b78b37b2b54e114b8c9c22ac2fe9ca18970d@ec2-44-218-3-195.compute-1.amazonaws.com:14340"],
+#         },
 #     },
 # }
+
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'channels.layers.InMemoryChannelLayer',
+    },
+}
 
 
 
@@ -140,7 +140,7 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static'),
 ]
-STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
+# STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
 MEDIA_ROOT = BASE_DIR / "static/images"
 
@@ -158,9 +158,9 @@ LOGGING = {
     },
 }
 
-COLLECTSTATIC = False
+# COLLECTSTATIC = False
 
-WHITENOISE_ROOT = '../static/'
+# WHITENOISE_ROOT = '../static/'
 
 
 # EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
@@ -177,4 +177,4 @@ WHITENOISE_ROOT = '../static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-django_heroku.settings(locals())
+# django_heroku.settings(locals())

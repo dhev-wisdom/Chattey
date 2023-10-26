@@ -139,11 +139,17 @@ class GroupChatConsumer(AsyncWebsocketConsumer):
     def get_message(self, id):
         message = Message.objects.get(id=id)
         return message
+    
+    @sync_to_async
+    def get_sender(self, username):
+        sender = User.objects.get(username=username)
+        return sender.id
 
     async def receive(self, text_data):
         text_data_json = json.loads(text_data)
         message_type = text_data_json.get('type')
         sender = text_data_json.get('sender')
+        sender_id = await self.get_sender(sender)
         room_id = text_data_json.get('room_id')
         print("message type: ", message_type)
         message = text_data_json['message']
@@ -160,6 +166,7 @@ class GroupChatConsumer(AsyncWebsocketConsumer):
                     'room_id': room_id,
                     'message': message,
                     'sender': sender,
+                    'sender_id': sender_id,
                     'time': message_.timestamp.strftime('%Y-%m-%d %H:%M:%S'),
                     'is_read': message_.is_read,
                     'is_deleted': message_.is_deleted,
@@ -173,6 +180,7 @@ class GroupChatConsumer(AsyncWebsocketConsumer):
         message = event['message']
         room_id = event['room_id']
         sender = event['sender']
+        sender_id = event['sender_id']
         time = event['time']
         is_read = event['is_read']
         is_edited = event['is_edited']
@@ -183,6 +191,7 @@ class GroupChatConsumer(AsyncWebsocketConsumer):
             'message': message,
             'room_id': room_id,
             'sender': sender,
+            'sender_id': sender_id,
             'is_read': is_read,
             'is_edited': is_edited,
             'is_deleted': is_deleted,
