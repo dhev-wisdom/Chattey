@@ -13,7 +13,7 @@
 
 {% block content %}
 <div class="border text-center p-5 m-5">
-<p class="name my-4">Confirm {{message.body}} delete!</p>
+<p class="name my-4">Confirm "{{message.body}}" delete!</p>
 <form method="post" class="mb-4">
     {% csrf_token %}
     <input type="submit" class="name" value="Proceed">

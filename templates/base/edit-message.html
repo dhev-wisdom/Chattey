@@ -12,7 +12,7 @@
 
 {% block content %}
 <div class="border text-center p-5 m-5">
-<p class="name mt-4">Edit {{message.body}}</p>
+<p class="name mt-4">Edit "{{message.body}}"</p>
 
 <form method="post" class="edit-message-form">
     {% csrf_token %}

@@ -99,7 +99,7 @@
         const timeStamp = document.createElement('small');
         const sender = data.sender;
 
-        prev.classList.add("hidden");
+        if (prev) prev.classList.add("hidden");
 
         if (sender === '{{ request.user.username|safe }}') {
             messageDiv.className = "sender-message theme-color text-white text-right ms-auto";
