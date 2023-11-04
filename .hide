@@ -10,3 +10,13 @@ Procfile(asgi) = web: daphne -b 0.0.0.0 -p $PORT mysite.asgi:application
 web: daphne chattey.asgi:application --port $PORT --bind 0.0.0.0 -v2
 daphne -b 0.0.0.0 -p 8001 chattey.asgi:application
 pip install pymongo==3.12.3
+
+
+https://chattey.onrender.com
+
+
+RUN echo "CHANNEL_LAYERS = {" >> settings.py
+RUN echo "    'BACKEND': 'channels_redis.core.RedisChannelLayer'," >> settings.py
+RUN echo "    'CONFIG': {" >> settings.py
+RUN echo "        'hosts': ['redis://redis:6379']," >> settings.py
+RUN echo "    }," >> settings.py
