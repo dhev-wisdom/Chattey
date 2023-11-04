@@ -18,8 +18,6 @@ ALLOWED_HOSTS = ['chattey-ebd43eb5547a.herokuapp.com', '127.0.0.1', '.onrender.c
 
 
 INSTALLED_APPS = [
-    'channels',
-    'base',
     'daphne',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -27,6 +25,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'channels',
+    'base',
 ]
 
 MIDDLEWARE = [

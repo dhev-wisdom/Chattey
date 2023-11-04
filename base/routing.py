@@ -1,5 +1,8 @@
+import django
 from django.urls import path, re_path
 from .consumers import PrivateChatConsumer, GroupChatConsumer
+
+django.setup()
 
 websocket_urlpatterns = [
     path('ws/private-chat/<str:username>/', PrivateChatConsumer.as_asgi()),
