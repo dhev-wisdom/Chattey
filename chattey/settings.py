@@ -14,7 +14,11 @@ SECRET_KEY = SECRET_KEY
 
 DEBUG = False
 
+CIDR_ALLOWED_HOSTS = ['https://chattey.onrender.com']
+
 ALLOWED_HOSTS = ['chattey-ebd43eb5547a.herokuapp.com', '127.0.0.1', 'https://chattey.onrender.com', '.onrender.com']
+
+ALLOWED_HOSTS += CIDR_ALLOWED_HOSTS
 
 
 INSTALLED_APPS = [
@@ -53,7 +57,7 @@ MIDDLEWARE = [
     
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
-    'channels.middleware.WebsocketMiddleware',
+    'cidr.middleware.CIDRMiddleware',
 ]
 
 ROOT_URLCONF = 'chattey.urls'
