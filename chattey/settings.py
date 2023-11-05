@@ -14,7 +14,7 @@ SECRET_KEY = SECRET_KEY
 
 DEBUG = False
 
-ALLOWED_HOSTS = ['chattey-ebd43eb5547a.herokuapp.com', '127.0.0.1', '.onrender.com', 'https://chattey.onrender.com', 'chattey.onrender.com']
+ALLOWED_HOSTS = ['chattey-ebd43eb5547a.herokuapp.com', '127.0.0.1', 'https://chattey.onrender.com', '.onrender.com']
 
 
 INSTALLED_APPS = [
@@ -28,16 +28,32 @@ INSTALLED_APPS = [
     'channels',
 ]
 
+# MIDDLEWARE = [
+#     'django.middleware.security.SecurityMiddleware',
+#     'django.contrib.sessions.middleware.SessionMiddleware',
+#     'django.middleware.common.CommonMiddleware',
+#     'django.middleware.csrf.CsrfViewMiddleware',
+#     'django.contrib.auth.middleware.AuthenticationMiddleware',
+#     'django.contrib.messages.middleware.MessageMiddleware',
+#     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+#     'whitenoise.middleware.WhiteNoiseMiddleware',
+#     # 'channels.middleware.WebsocketMiddleware',
+# ]
+
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
+
+    
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
+
+    
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
-    # 'channels.middleware.WebsocketMiddleware',
+    'channels.middleware.WebsocketMiddleware',
 ]
 
 ROOT_URLCONF = 'chattey.urls'
