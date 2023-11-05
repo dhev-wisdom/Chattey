@@ -17,6 +17,9 @@ DEBUG = False
 
 ALLOWED_HOSTS = ['chattey-ebd43eb5547a.herokuapp.com', '127.0.0.1', 'https://chattey.onrender.com/', 'https://chattey.onrender.com', 'chattey.onrender.com', 'chattey.onrender.com/']
 
+CSRF_TRUSTED_ORIGINS = ['https://chattey.onrender.com/', 'https://chattey.onrender.com', 'chattey.onrender.com', 'chattey.onrender.com/']
+
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
 INSTALLED_APPS = [
     'django.contrib.admin',
