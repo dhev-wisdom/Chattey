@@ -14,7 +14,7 @@ SECRET_KEY = SECRET_KEY
 
 DEBUG = False
 
-ALLOWED_HOSTS = ['chattey-ebd43eb5547a.herokuapp.com', '127.0.0.1', '.onrender.com']
+ALLOWED_HOSTS = ['chattey-ebd43eb5547a.herokuapp.com', '127.0.0.1', '.onrender.com', 'https://chattey.onrender.com', 'chattey.onrender.com']
 
 
 INSTALLED_APPS = [
