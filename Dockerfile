@@ -10,4 +10,4 @@ COPY requirements.txt /app/
 RUN pip install --no-cache-dir -r requirements.txt
 
 COPY . /app
-CMD ["daphne", "-b", "0.0.0.0:8000", "chattey.asgi:application"]
+CMD ["daphne", "-b", "0.0.0.0", "chattey.asgi:application"]
