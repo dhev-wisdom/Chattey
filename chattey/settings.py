@@ -12,21 +12,20 @@ SECRET_KEY = os.environ.get("SECRET_KEY")
 
 SECRET_KEY = SECRET_KEY
 
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['chattey-ebd43eb5547a.herokuapp.com', '127.0.0.1', '.onrender.com']
 
 
 INSTALLED_APPS = [
-    'daphne',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'channels',
     'base',
+    'channels',
 ]
 
 MIDDLEWARE = [
@@ -60,9 +59,9 @@ TEMPLATES = [
     },
 ]
 
-ASGI_APPLICATION = 'chattey.asgi.application'
-
 WSGI_APPLICATION = 'chattey.wsgi.application'
+
+ASGI_APPLICATION = 'chattey.asgi.application'
 
 # DATABASES = {
 #     'default': {
