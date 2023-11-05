@@ -85,7 +85,7 @@
         const messageArea = document.getElementById("message-input");
         if (messageArea) messageArea.focus();
     });
-    const url = 'wss://' + window.location.host + '/ws/private-chat/{{ other_user.username|safe }}/';
+    const url = 'wss://' + window.location.host + '/wss/private-chat/{{ other_user.username|safe }}/';
     console.log('url ', url);
     const chatSocket = new WebSocket(url);
 

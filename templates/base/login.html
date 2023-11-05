@@ -9,6 +9,7 @@
     }
 </script>
 <link href="{% static 'css/login.css' %}" rel="stylesheet" type="text/css" media="all" />
+<link rel="stylesheet" href="{% static 'css/index.css' %}">
 {% endblock css %}
 
 {% block title %}
@@ -16,30 +17,6 @@
 {% endblock title %}
 
 {% block content %}
-
-<!-- <form method="post">
-    {% csrf_token %}
-    <p>{{message}}</p>
-    <div>
-        <label for="username">Username
-            <input type="text" name="username" id="username" placeholder="Username">
-        </label>
-    </div>
-    <div>
-        <label for="pasword">Password
-            <input type="password" name="password" id="password" placeholder="Password">
-        </label>
-    </div>
-    {% if messages %}
-        {% for message in messages %}
-        <p>{{message}}</p>
-        {% endfor %}
-    {% endif %}
-    
-    <input type="submit" value="Login">
-    <p>Don't have an account? <a href="{% url 'register' %}">SignUp</a></p>
-    <a href="{% url 'reset-password' %}">Forgot Your Password?</a>
-</form> -->
 
 <div class="main-w3layouts wrapper">
     <h1 class="text-white">LOGIN TO CHATTEY</h1>

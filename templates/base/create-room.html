@@ -14,13 +14,13 @@
 
 {% block content %}
 
-<div class="border m-5 p-0">
+<div class="border m-2 m-5-lg p-0">
     <div class="d-flex w-100 theme-color text-white align-items-center mb-3">
-        <div class="d-flex flex-column text-center p-5 align-items-start">
-            <h1 class="text-center p-5 fs-1">Start a group chat</h1>
+        <div class="d-flex flex-column text-center p-2 p-5-lg align-items-start">
+            <h1 class="text-center p-1 p-5-lg fs-1">Start a group chat</h1>
         </div>
     </div>
-    <form method="post" class="p-5">
+    <form method="post" class="p-2 p-5-lg">
         {% csrf_token %}
         <p class="name mb-3">Group chats are a great way to have big fun together</p>
         {{ form.as_p }}

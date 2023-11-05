@@ -112,6 +112,12 @@ a {
     .send {
         width: auto;
     }
+    .pchat-div {
+        padding: 1rem
+    }
+    .chat-area {
+        padding: 1rem;
+    }
 }
 
 @media screen and (max-width: 768px) {
@@ -123,5 +129,23 @@ a {
     }
     .send {
         width: auto;
+    }
+    .pchat-div {
+        padding: .8rem
+    }
+    .chat-area {
+        padding: .8rem;
+    }
+}
+
+@media screen and (max-width: 568px) {
+    .pchat-sect {
+        margin: .5rem .5rem;
+    }
+    .pchat-div {
+        padding: .5rem
+    }
+    .chat-area {
+        padding: .5rem;
     }
 }
