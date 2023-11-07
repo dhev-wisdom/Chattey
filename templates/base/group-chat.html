@@ -108,8 +108,9 @@
             </div>
             <div class="prev-chat-area" id="group-message"></div>
             <form method="post" class="send-form">
+                {% csrf_token %}
                 <input type="text" name="chat" id="message-input" class="message" placeholder="Enter your message...">
-                <input type="submit" id="send-message" value="Send" class="send theme-color text-white ms-auto">
+                <input type="submit" id="send-message" value="➤" class="send theme-color text-white ms-auto">
             </form>
         </div>
     </div>

@@ -59,7 +59,7 @@ a {
 }
 .send-form {
     display: flex;
-    row-gap: 1rem;
+    gap: 1rem;
     width: 100%;
     margin-top: 1.5rem;
 }
@@ -71,15 +71,15 @@ a {
     padding: .5rem 1rem;
     border: 1px solid grey;
     border-radius: 10px;
-    width: 88%;
+    flex: 8;
 }
 .send {
     text-align: center;
     border: none;
     border-radius: 10px;
     font-weight: 500;
-    padding: .5rem 1rem;
-    width: 10%;
+    padding: .5rem .5rem;
+    flex: 1;
 }
 .size2 {
     font-size: 2rem;
@@ -94,24 +94,18 @@ a {
     .pchat-sect {
         margin: 1rem 4rem;
     }
-    .message {
-        width: 88%;
-    }
-    .send {
-        width: auto;
-    }
 }
 
 @media screen and (max-width: 992px) {
     .pchat-sect {
         margin: 1rem 3rem;
     }
-    .message {
-        width: 80%;
+    /* .message {
+        width: 90%;
     }
     .send {
         width: auto;
-    }
+    } */
     .pchat-div {
         padding: 1rem
     }
@@ -124,17 +118,20 @@ a {
     .pchat-sect {
         margin: .5rem 1rem;
     }
-    .message {
-        width: 80%;
+    /* .message {
+        width: 90%;
     }
     .send {
         width: auto;
-    }
+    } */
     .pchat-div {
         padding: .8rem
     }
     .chat-area {
         padding: .8rem;
+    }
+    .send-form {
+        gap: 1rem;
     }
 }
 
@@ -147,5 +144,8 @@ a {
     }
     .chat-area {
         padding: .5rem;
+    }
+    .send-form {
+        gap: 1rem;
     }
 }
