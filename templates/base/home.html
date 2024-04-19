@@ -41,7 +41,11 @@
                         <!-- <p class="time">09:23</p> -->
                     </div>
                     <div class="chat-container mt-0">
+                        {% if user.last_login %}
+                        <p class="last-chat">Last seen {{user.last_login}}</p>
+                        {% else %}
                         <p class="last-chat">Joined {{user.date_joined}}</p>
+                        {% endif %}
                     </div>
                 </div>
             </div>

@@ -17,9 +17,9 @@ DEBUG = False
 
 ALLOWED_HOSTS = ['chattey-ebd43eb5547a.herokuapp.com', '127.0.0.1', 'https://chattey.onrender.com/', 'https://chattey.onrender.com', 'chattey.onrender.com', 'chattey.onrender.com/']
 
-CSRF_TRUSTED_ORIGINS = ['https://chattey.onrender.com/', 'https://chattey.onrender.com', 'chattey.onrender.com', 'chattey.onrender.com/']
+# CSRF_TRUSTED_ORIGINS = ['https://chattey.onrender.com/', 'https://chattey.onrender.com', 'chattey.onrender.com', 'chattey.onrender.com/']
 
-SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+# SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -48,13 +48,9 @@ MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
-
-    
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
-
-    
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
 ]
@@ -89,20 +85,20 @@ ASGI_APPLICATION = 'chattey.asgi.application'
 #     }
 # }
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-#         'NAME': os.environ.get("DATABASE_NAME"),
-#         'USER': os.environ.get("DATABASE_USER"),
-#         'PASSWORD': os.environ.get("DATABASE_PASSWORD"),
-#         'HOST': os.environ.get("DATABASE_HOST"),
-#         'PORT': 5432,
-#     }
-# }
-
 DATABASES = {
-    'default': dj_database_url.parse(os.environ.get('DATABASE_URL')),
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': os.environ.get("DATABASE_NAME"),
+        'USER': os.environ.get("DATABASE_USER"),
+        'PASSWORD': os.environ.get("DATABASE_PASSWORD"),
+        'HOST': os.environ.get("DATABASE_HOST"),
+        'PORT': 5432,
+    }
 }
+
+# DATABASES = {
+#     'default': dj_database_url.parse(os.environ.get('DATABASE_URL')),
+# }
 
 # db_from_env = dj_database_url.config(conn_max_age=500)
 # DATABASES['default'].update(db_from_env)

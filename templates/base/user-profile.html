@@ -19,7 +19,7 @@
         <i class="bi bi-arrow-left size2 text-white"></i>
     </a>
     <div class="d-flex w-100 theme-color text-center text-white align-items-center mb-3">
-        <div class="d-flex flex-column text-center p-2 p-5-lg align-items-start">
+        <div class="d-flex flex-column text-center p-5 align-items-start">
             <h1 class="text-center pt-5 fs-1">{{user.first_name|title}} {{user.last_name|title}}</h1>
             {% if user.first_name %}
             <h6 class="text-center mt-3">Username: @{{user.username|title}}</h6>
@@ -32,7 +32,7 @@
         </div>
     </div>
 
-    <div class="py-2 py-4-lg px-2 px-5-lg mb-3">
+    <div class="py-4 px-5 mb-2">
         <h2 class="mb-4">{{user.username|title}}'s Friends</h2>
         <div>
             {% for friend in users.all %}
@@ -46,7 +46,7 @@
         </div>
     </div>
 
-    <div class="py-2 py-4-lg px-2 px-5-lg ">
+    <div class="py-4 px-5">
         <h2 class="mb-4">{{user.username|title}}'s Groups</h2>
         <div>
             {% for group in groups %}
