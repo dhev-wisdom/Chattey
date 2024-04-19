@@ -19,7 +19,7 @@ ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'https://chattey.onrender.com/', 'htt
 
 CSRF_TRUSTED_ORIGINS = ['https://chattey.onrender.com/', 'https://chattey.onrender.com', 'chattey.onrender.com', 'chattey.onrender.com/']
 
-# SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -174,9 +174,9 @@ LOGGING = {
     },
 }
 
-COLLECTSTATIC = False
+# COLLECTSTATIC = False
 
-WHITENOISE_ROOT = '../static/'
+# WHITENOISE_ROOT = '../static/'
 
 
 # EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
